@@ -46,8 +46,8 @@ DNSPort 9053
 ReachableAddresses *:80, *:443
 ReachableAddresses reject *:*
 # Убираю страны через которые не стоит выходить в сеть
-ExcludeNodes {fr}
-ExcludeExitNodes {us},{au},{ca},{nz},{gb},{fr}
+ExcludeNodes {ru}
+ExcludeExitNodes {us},{au},{ca},{nz},{gb},{fr},{ru}
 
 ```
 Главное необходимо включить параметры TransPort и DNSPort, а иначе ничего не получится проксировать.
