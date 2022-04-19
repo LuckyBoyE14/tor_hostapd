@@ -1,0 +1,20 @@
+# Конфиг юнита для нашего скрипта с назначением правил iptables
+# Расположение файла: /etc/systemd/system/iptables-rules-tor.service
+[Unit]
+# общие настройки
+Description=Writing ip tables rules for wifi-hostspot and tor-proxy
+Requires=iptables.service
+After=iptables.service syslog.target network.target network-online.target nss-lookup.target
+[Service]
+# Даем знать systemd, что этот сервис представляет из себя лишь 1 процесс.
+Type=oneshot
+# Установка переменной окружения
+ExecStartPre=/bin/bash -c "/bin/systemctl set-environment IP_ADDR_TUNNEL=$(ip addr | awk '/inet.+enp/ {print $2}' | awk -F/ '{print $1}')"
+# Выполнить эту команду при запуске сервиса.
+# НЕОБХОДИМО УКАЗАТЬ ПУТЬ К АБСОЛЮТНЫЙ СКРИПТУ
+ExecStart=/path/to/iptables.sh ${IP_ADDR_TUNNEL}
+# Даем знать systemd, что сервис нужно считать запущенным, даже если основной процесс прекратил свою работу.
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

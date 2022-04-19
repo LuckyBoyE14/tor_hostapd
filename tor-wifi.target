@@ -1,0 +1,13 @@
+# Юнит для запуска сразу нескольких служб
+[Unit]
+Description=Create wifi hostspot, rulling iptables and strat tor
+# Скрипт с назначенными правилами
+Requires=iptables-rules-tor.service
+# Запуск службы Tor
+Requires=tor.service
+# Запуск точки доступа
+Requires=create_ap.service
+
+After=iptables.service multi-user.target network.target syslog.target network-online.target nss-lookup.target
+[Install]
+WantedBy=multi-user.target
